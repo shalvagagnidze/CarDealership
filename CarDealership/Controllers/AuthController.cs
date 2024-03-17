@@ -33,6 +33,8 @@ namespace CarDealership.Controllers
         }
 
         [HttpPost("user-registration")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> Registration(UserModel userModel)
         {
            if(!ModelState.IsValid)
@@ -44,6 +46,9 @@ namespace CarDealership.Controllers
         }
 
         [HttpPost("user-login")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Login(string email,string password)
         {
             if (!ModelState.IsValid)

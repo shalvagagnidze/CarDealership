@@ -27,12 +27,12 @@ namespace CarDealership.Models
 
         [Required]
         [PhoneValidation]
-        public string? Phone { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [PasswordValidation]
-        public string? Password { get; set; }
+        public string? PasswordHash { get; set; }
 
         [Required]
         public string? Role {  get; set; }

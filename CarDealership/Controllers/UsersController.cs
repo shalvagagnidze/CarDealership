@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarDealership.Data;
+using CarDealership.Entities;
 using CarDealership.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +22,10 @@ namespace CarDealership.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet(Name = "get-users")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _db.Users.Select(user => _mapper.Map<UserModel>(user)).ToListAsync();

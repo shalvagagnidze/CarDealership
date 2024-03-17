@@ -40,7 +40,7 @@ namespace CarDealership.Services
             {
                 case null:
                     throw new Exception("User model couldn't be null!");
-                case var u when u.Password is null:
+                case var u when u.PasswordHash is null:
                     throw new Exception("Password couldn't be null!");
             }
 
@@ -51,12 +51,12 @@ namespace CarDealership.Services
                 UserName = userModel.UserName,
                 Email = userModel.Email,
                 IdNumber = userModel.IdNumber,
-                PhoneNumber = userModel.Phone
+                PhoneNumber = userModel.PhoneNumber
             };
 
             if (await _roleManager.RoleExistsAsync(userModel.Role))
             {
-                var result = await _userManager.CreateAsync(user, userModel.Password);
+                var result = await _userManager.CreateAsync(user, userModel.PasswordHash);
                 var roleResult = await _userManager.AddToRoleAsync(user, userModel.Role);
 
                 if (result.Succeeded && roleResult.Succeeded)
