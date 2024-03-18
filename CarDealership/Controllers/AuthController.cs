@@ -21,7 +21,7 @@ namespace CarDealership.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        public AuthController(CarDbContext db, IMapper mapper,IAuthService authService, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AuthController(CarDbContext db, IMapper mapper, IAuthService authService, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _db = db;
             _mapper = mapper;
@@ -37,7 +37,7 @@ namespace CarDealership.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> Registration(UserModel userModel)
         {
-           if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -49,7 +49,7 @@ namespace CarDealership.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Login(string email,string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
             if (!ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace CarDealership.Controllers
             }
 
             return await _authService.Login(email, password);
-            
+
         }
 
     }

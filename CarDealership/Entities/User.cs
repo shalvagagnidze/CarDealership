@@ -17,7 +17,5 @@ namespace CarDealership.Entities
         [IdNumber]    
         public string? IdNumber { get; set; }
 
-
-
     }
 }
