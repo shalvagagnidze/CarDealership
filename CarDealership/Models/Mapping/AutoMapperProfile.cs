@@ -10,6 +10,12 @@ namespace CarDealership.Models.Mapping
         {
             CreateMap<User, UserModel>();
             CreateMap<UserModel, User>();
+            CreateMap<CarCategory, CarCategoryModel>();
+            CreateMap<CarCategoryModel, CarCategory>();
+            CreateMap<CarBrand, CarBrandModel>();
+            CreateMap<CarBrandModel, CarBrand>();
+            CreateMap<CarModel,CarModelDto>();
+            CreateMap<CarModelDto, CarModel>();
         }
     }
 }

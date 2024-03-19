@@ -30,7 +30,7 @@ namespace CarDealership.Controllers
         [HttpGet("get-users")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> GetUsers()
         {
 
