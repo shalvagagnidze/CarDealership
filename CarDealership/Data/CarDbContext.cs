@@ -15,6 +15,7 @@ namespace CarDealership.Data
         public DbSet<CarCategory> Categories { get; set; }
         public DbSet<CarBrand> Brands { get; set; }
         public DbSet<CarModel> Models { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +29,13 @@ namespace CarDealership.Data
                         .HasOne(category => category.Category)
                         .WithMany(models => models.Models);
 
+            modelBuilder.Entity<Report>()
+                        .HasOne(car => car.CarModel)
+                        .WithMany(report => report.Reports);
 
+            modelBuilder.Entity<Report>()
+                        .HasOne(user => user.User)
+                        .WithMany(report => report.Reports);
         }
     }
 }

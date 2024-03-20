@@ -13,5 +13,6 @@ namespace CarDealership.Entities
         public int ManufactureYear { get; set; }
         public CarCategory? Category { get; set; }
         public CarBrand? Brand { get; set; }
+        public List<Report>? Reports { get; set; }
     }
 }

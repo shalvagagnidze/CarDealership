@@ -35,13 +35,19 @@ namespace CarDealership.Services
         public async Task<IActionResult> Registration(UserModel userModel)
         {
 
-
             switch (userModel)
             {
                 case null:
                     throw new Exception("User model couldn't be null!");
                 case var u when u.PasswordHash is null:
                     throw new Exception("Password couldn't be null!");
+            }
+
+            var userExists = _db.Users.FirstOrDefault(x => x.UserName == userModel.UserName);
+
+            if (userExists is not null)
+            {
+                return new BadRequestObjectResult("User Already Exists");
             }
 
             var user = new User
@@ -61,7 +67,7 @@ namespace CarDealership.Services
 
                 if (result.Succeeded && roleResult.Succeeded)
                 {
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
                     return new OkObjectResult("Registration made successfully");
                 }
             }

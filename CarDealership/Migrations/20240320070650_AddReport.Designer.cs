@@ -3,6 +3,7 @@ using System;
 using CarDealership.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarDealership.Migrations
 {
     [DbContext(typeof(CarDbContext))]
-    partial class CarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240320070650_AddReport")]
+    partial class AddReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,18 +97,12 @@ namespace CarDealership.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CarModelId")
+                    b.Property<int?>("CarId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
@@ -115,16 +112,11 @@ namespace CarDealership.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CarModelId");
+                    b.HasIndex("CarId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reports");
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -368,17 +360,11 @@ namespace CarDealership.Migrations
 
             modelBuilder.Entity("CarDealership.Entities.Report", b =>
                 {
-                    b.HasOne("CarDealership.Entities.CarModel", "CarModel")
-                        .WithMany("Reports")
-                        .HasForeignKey("CarModelId");
+                    b.HasOne("CarDealership.Entities.CarModel", "Car")
+                        .WithMany("Report")
+                        .HasForeignKey("CarId");
 
-                    b.HasOne("CarDealership.Entities.User", "User")
-                        .WithMany("Reports")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("CarModel");
-
-                    b.Navigation("User");
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -444,12 +430,7 @@ namespace CarDealership.Migrations
 
             modelBuilder.Entity("CarDealership.Entities.CarModel", b =>
                 {
-                    b.Navigation("Reports");
-                });
-
-            modelBuilder.Entity("CarDealership.Entities.User", b =>
-                {
-                    b.Navigation("Reports");
+                    b.Navigation("Report");
                 });
 #pragma warning restore 612, 618
         }

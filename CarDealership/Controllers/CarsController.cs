@@ -68,13 +68,13 @@ namespace CarDealership.Controllers
                                   {
                                       model.Id,
                                       model.Name,
-                                      model.ManufactureYear,                                    
-                                      Caregory = new 
+                                      model.ManufactureYear,
+                                      Caregory = new
                                       {
-                                           model.Category.Id,
-                                           model.Category.Name
+                                          model.Category.Id,
+                                          model.Category.Name
                                       },
-                                      Brand = new 
+                                      Brand = new
                                       {
                                           model.Brand.Id,
                                           model.Brand.Name
@@ -90,11 +90,119 @@ namespace CarDealership.Controllers
             return Ok(models);
         }
 
+        [HttpGet("get-car-model-by-category")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [Authorize]
+        public async Task<IActionResult> GetCarModelsByCategory(string categoryName)
+        {
+            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Name.ToUpper() == categoryName.ToUpper());
+
+            if (category is null)
+            {
+                return NotFound("Category Not Found");
+            }
+
+            var models = await _db.Models
+                                  .Where(model => model.Category.Name.ToUpper() == category.Name.ToUpper())
+                                  .Select(model => new
+                                  {
+                                      model.Id,
+                                      model.Name,
+                                      model.ManufactureYear,
+                                      Brand = new
+                                      {
+                                          model.Brand.Id,
+                                          model.Brand.Name
+                                      }
+                                  })
+                                  .ToListAsync();
+
+            if (models is null)
+            {
+                return Ok(new List<CarModel>());
+            }
+
+            return Ok(models);
+        }
+
+        [HttpGet("get-car-model-by-brand")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [Authorize]
+        public async Task<IActionResult> GetCarModelsByBrand(string bradnName)
+        {
+            var brand = await _db.Brands.FirstOrDefaultAsync(c => c.Name.ToUpper() == bradnName.ToUpper());
+
+            if (brand is null)
+            {
+                return NotFound("Brand Not Found");
+            }
+
+            var models = await _db.Models
+                                  .Where(model => model.Brand.Name.ToUpper() == brand.Name.ToUpper())
+                                  .Select(model => new
+                                  {
+                                      model.Id,
+                                      model.Name,
+                                      model.ManufactureYear,
+                                      Category = new
+                                      {
+                                          model.Category.Id,
+                                          model.Category.Name
+                                      }
+                                  })
+                                  .ToListAsync();
+
+            if (models is null)
+            {
+                return Ok(new List<CarModel>());
+            }
+
+            return Ok(models);
+        }
+
+        [HttpGet("get-car-model-by-category-and-brand")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [Authorize]
+        public async Task<IActionResult> GetCarModelsByCategoryAndBrand(string categoryName,string bradnName)
+        {
+            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Name.ToUpper() == categoryName.ToUpper());
+            var brand = await _db.Brands.FirstOrDefaultAsync(c => c.Name.ToUpper() == bradnName.ToUpper());
+
+            if (brand is null || category is null)
+            {
+                return NotFound("Category Or Brand Not Found");
+            }
+
+            var models = await _db.Models
+                                  .Where(model => model.Brand.Name.ToUpper() == brand.Name.ToUpper() 
+                                                  && model.Category.Name.ToUpper() == categoryName.ToUpper())
+                                  .Select(model => new
+                                  {
+                                      model.Id,
+                                      model.Name,
+                                      model.ManufactureYear
+                                  })
+                                  .ToListAsync();
+
+            if (models is null)
+            {
+                return Ok(new List<CarModel>());
+            }
+
+            return Ok(models);
+        }
+
         [HttpPost("add-car-category")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        [Authorize(Roles ="Admin,Moderator")]
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> AddCarCategory(string name)
         {
             if (!ModelState.IsValid)
@@ -102,7 +210,7 @@ namespace CarDealership.Controllers
                 return BadRequest(ModelState);
             }
 
-            var categoryExists = await _db.Categories.FirstOrDefaultAsync(category => category.Name == name);
+            var categoryExists = await _db.Categories.FirstOrDefaultAsync(category => category.Name.ToUpper() == name.ToUpper());
 
             if (categoryExists is not null)
             {
@@ -137,7 +245,7 @@ namespace CarDealership.Controllers
                 return BadRequest(ModelState);
             }
 
-            var brandExists = await _db.Brands.FirstOrDefaultAsync(brand => brand.Name == name);
+            var brandExists = await _db.Brands.FirstOrDefaultAsync(brand => brand.Name.ToUpper() == name.ToUpper());
 
             if (brandExists is not null)
             {
@@ -173,10 +281,12 @@ namespace CarDealership.Controllers
                 return BadRequest(ModelState);
             }
 
-            var modelExists = await _db.Models.FirstOrDefaultAsync(model => model.Name == name);
-            var brand = await _db.Brands.FirstOrDefaultAsync(brand => brand.Name == brandName);
+            var modelExists = await _db.Models
+                                            .FirstOrDefaultAsync(model => model.Name.ToUpper() == name.ToUpper());
+            var brand = await _db.Brands
+                                        .FirstOrDefaultAsync(brand => brand.Name.ToUpper() == brandName.ToUpper());
             var category = await _db.Categories
-                                    .FirstOrDefaultAsync(category => category.Name == categoryName);
+                                    .FirstOrDefaultAsync(category => category.Name.ToUpper() == categoryName.ToUpper());
 
             if (brand is null || category is null)
             {

@@ -16,6 +16,8 @@ namespace CarDealership.Entities
         [Required]
         [IdNumber]    
         public string? IdNumber { get; set; }
+        public List<Report>? Reports { get; set; }
+
 
     }
 }
