@@ -31,37 +31,31 @@ namespace CarDealership.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> GetUsers()
+        public IActionResult GetUsers()
         {
+            var query = from user in _db.Users
+                        join userRole in _db.UserRoles
+                        on user.Id equals userRole.UserId
+                        join role in _db.Roles
+                        on userRole.RoleId equals role.Id
+                        select new
+                        {
+                            User = user,
+                            Role = role
+                        };
 
-            var users = await _db.Users.ToListAsync();
-            var usersList = new List<object>();
-
-            foreach (var user in users)
+            var result = query.Select(o => new UserModel
             {
-                var roles = await _userManager.GetRolesAsync(user);
-
-                var userModel = _mapper.Map<UserModel>(user);
-
-                usersList.Add(new
-                {
-                    userModel.FirstName,
-                    userModel.LastName,
-                    userModel.UserName,
-                    userModel.Email,
-                    userModel.IdNumber,
-                    userModel.PhoneNumber,
-                    Roles = roles
-                });
-
-            }
-
-            if (users is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(usersList);
+                FirstName = o.User.FirstName,
+                LastName = o.User.LastName,
+                UserName = o.User.UserName,
+                Email = o.User.Email,
+                IdNumber = o.User.IdNumber,
+                PhoneNumber = o.User.PhoneNumber,
+                Role = o.Role.Name
+            });
+            
+            return Ok(result);
         }
 
         [HttpGet("get-roles")]

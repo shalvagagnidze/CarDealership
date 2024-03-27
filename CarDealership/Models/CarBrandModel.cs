@@ -5,7 +5,8 @@ namespace CarDealership.Models
 {
     public class CarBrandModel
     {
-        [Required]
+        public int Id { get; set; }
+
         [NotNullOrEmptyValidation]
         public string? Name { get; set; }
     }

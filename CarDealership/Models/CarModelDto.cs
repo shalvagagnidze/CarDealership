@@ -4,10 +4,11 @@ namespace CarDealership.Models
 {
     public class CarModelDto
     {
-        [Required]
+        public int Id { get; set; }
+
         public string? Name { get; set; }
 
-        [Required]
+        
         public int ManufactureYear { get; set; }
     }
 }

@@ -25,11 +25,10 @@ namespace CarDealership.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [Authorize]
-        public async Task<IActionResult> GetCarCategories()
+        public IActionResult GetCarCategories()
         {
-            var categories = await _db.Categories
-                                      .Select(category => _mapper.Map<CarCategoryModel>(category))
-                                      .ToListAsync();
+            var categories = _mapper.Map<List<CarCategoryModel>>(_db.Categories);
+                                      
 
             if (categories is null)
             {
@@ -43,12 +42,10 @@ namespace CarDealership.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [Authorize]
-        public async Task<IActionResult> GetCarBrands()
+        public IActionResult GetCarBrands()
         {
-            var brands = await _db.Brands
-                                  .Select(brand => _mapper.Map<CarBrandModel>(brand))
-                                  .ToListAsync();
-
+            var brands = _mapper.Map<List<CarCategoryModel>>(_db.Brands);
+                                 
             if (brands is null)
             {
                 return Ok(new List<CarBrand>());
