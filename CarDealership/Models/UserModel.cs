@@ -23,7 +23,7 @@ namespace CarDealership.Models
 
         [PhoneValidation]
         public string? PhoneNumber { get; set; }
-
+        public string? PasswordHash { get; set; }
         public string? Role { get; set; }
 
     }

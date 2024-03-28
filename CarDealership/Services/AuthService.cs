@@ -68,7 +68,7 @@ namespace CarDealership.Services
                 if (result.Succeeded && roleResult.Succeeded)
                 {
                     await _db.SaveChangesAsync();
-                    return new OkObjectResult("Registration made successfully");
+                    return new OkObjectResult("Registration has been successfully completed");
                 }
             }
             else
