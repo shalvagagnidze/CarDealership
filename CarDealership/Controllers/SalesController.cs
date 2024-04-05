@@ -38,17 +38,17 @@ namespace CarDealership.Controllers
                                        report.Description,
                                        Model = new
                                        {
-                                           report.CarModel.Id,
+                                           report.CarModel!.Id,
                                            report.CarModel.Name
                                        },
                                        Category = new
                                        {
-                                           report.CarModel.Category.Id,
+                                           report.CarModel.Category!.Id,
                                            report.CarModel.Category.Name
                                        },
                                        Brand = new
                                        {
-                                           report.CarModel.Brand.Id,
+                                           report.CarModel.Brand!.Id,
                                            report.CarModel.Brand.Name
                                        }
                                    }).ToListAsync();
@@ -78,17 +78,17 @@ namespace CarDealership.Controllers
                                        report.Description,
                                        Model = new
                                        {
-                                           report.CarModel.Id,
+                                           report.CarModel!.Id,
                                            report.CarModel.Name
                                        },
                                        Category = new
                                        {
-                                           report.CarModel.Category.Id,
+                                           report.CarModel.Category!.Id,
                                            report.CarModel.Category.Name
                                        },
                                        Brand = new
                                        {
-                                           report.CarModel.Brand.Id,
+                                           report.CarModel.Brand!.Id,
                                            report.CarModel.Brand.Name
                                        }
                                    }).ToListAsync();
@@ -125,17 +125,17 @@ namespace CarDealership.Controllers
                                                report.Description,
                                                Model = new
                                                {
-                                                   report.CarModel.Id,
+                                                   report.CarModel!.Id,
                                                    report.CarModel.Name
                                                },
                                                Category = new
                                                {
-                                                   report.CarModel.Category.Id,
+                                                   report.CarModel.Category!.Id,
                                                    report.CarModel.Category.Name
                                                },
                                                Brand = new
                                                {
-                                                   report.CarModel.Brand.Id,
+                                                   report.CarModel.Brand!.Id,
                                                    report.CarModel.Brand.Name
                                                }
                                            }).ToListAsync();
@@ -157,7 +157,7 @@ namespace CarDealership.Controllers
         {
             var user = User.FindFirst(ClaimTypes.Name)?.Value;
 
-            return await _reportService.CreateReport(report, user, carModelId);
+            return await _reportService.CreateReport(report, user!, carModelId);
         }
     }
 }

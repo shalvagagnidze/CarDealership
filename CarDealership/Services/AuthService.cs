@@ -60,10 +60,10 @@ namespace CarDealership.Services
                 PhoneNumber = userModel.PhoneNumber
             };
 
-            if (await _roleManager.RoleExistsAsync(userModel.Role))
+            if (await _roleManager.RoleExistsAsync(userModel.Role!))
             {
-                var result = await _userManager.CreateAsync(user, userModel.PasswordHash);
-                var roleResult = await _userManager.AddToRoleAsync(user, userModel.Role);
+                var result = await _userManager.CreateAsync(user, userModel.PasswordHash!);
+                var roleResult = await _userManager.AddToRoleAsync(user, userModel.Role!);
 
                 if (result.Succeeded && roleResult.Succeeded)
                 {
@@ -104,8 +104,8 @@ namespace CarDealership.Services
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.Name,user.UserName),
+                new Claim(ClaimTypes.Email,user.Email!),
+                new Claim(ClaimTypes.Name,user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
             };
 
@@ -114,7 +114,7 @@ namespace CarDealership.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Key").Value));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Key").Value!));
 
             var signingCred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
 

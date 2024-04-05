@@ -124,7 +124,7 @@ namespace CarDealership.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
             var roleExists = await _roleManager.FindByNameAsync(role.ToUpper());
-            var userHasRole = await _userManager.IsInRoleAsync(user, role);
+            var userHasRole = await _userManager.IsInRoleAsync(user!, role);
 
             if (user is null || roleExists is null)
             {
@@ -153,7 +153,7 @@ namespace CarDealership.Controllers
         public async Task<IActionResult> RemoveAllRolesFromUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            var userRoles = await _userManager.GetRolesAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user!);
 
             if (user is null || userRoles is null)
             {

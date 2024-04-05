@@ -68,12 +68,12 @@ namespace CarDealership.Controllers
                                       model.ManufactureYear,
                                       Caregory = new
                                       {
-                                          model.Category.Id,
+                                          model.Category!.Id,
                                           model.Category.Name
                                       },
                                       Brand = new
                                       {
-                                          model.Brand.Id,
+                                          model.Brand!.Id,
                                           model.Brand.Name
                                       }
                                   })
@@ -94,7 +94,7 @@ namespace CarDealership.Controllers
         [Authorize]
         public async Task<IActionResult> GetCarModelsByCategory(string categoryName)
         {
-            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Name.ToUpper() == categoryName.ToUpper());
+            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Name!.ToUpper() == categoryName.ToUpper());
 
             if (category is null)
             {
@@ -102,7 +102,7 @@ namespace CarDealership.Controllers
             }
 
             var models = await _db.Models
-                                  .Where(model => model.Category.Name.ToUpper() == category.Name.ToUpper())
+                                  .Where(model => model.Category!.Name!.ToUpper() == category.Name!.ToUpper())
                                   .Select(model => new
                                   {
                                       model.Id,
@@ -110,7 +110,7 @@ namespace CarDealership.Controllers
                                       model.ManufactureYear,
                                       Brand = new
                                       {
-                                          model.Brand.Id,
+                                          model.Brand!.Id,
                                           model.Brand.Name
                                       }
                                   })
@@ -131,7 +131,7 @@ namespace CarDealership.Controllers
         [Authorize]
         public async Task<IActionResult> GetCarModelsByBrand(string bradnName)
         {
-            var brand = await _db.Brands.FirstOrDefaultAsync(c => c.Name.ToUpper() == bradnName.ToUpper());
+            var brand = await _db.Brands.FirstOrDefaultAsync(c => c.Name!.ToUpper() == bradnName.ToUpper());
 
             if (brand is null)
             {
@@ -139,7 +139,7 @@ namespace CarDealership.Controllers
             }
 
             var models = await _db.Models
-                                  .Where(model => model.Brand.Name.ToUpper() == brand.Name.ToUpper())
+                                  .Where(model => model.Brand!.Name!.ToUpper() == brand.Name!.ToUpper())
                                   .Select(model => new
                                   {
                                       model.Id,
@@ -147,7 +147,7 @@ namespace CarDealership.Controllers
                                       model.ManufactureYear,
                                       Category = new
                                       {
-                                          model.Category.Id,
+                                          model.Category!.Id,
                                           model.Category.Name
                                       }
                                   })
@@ -168,8 +168,8 @@ namespace CarDealership.Controllers
         [Authorize]
         public async Task<IActionResult> GetCarModelsByCategoryAndBrand(string categoryName,string bradnName)
         {
-            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Name.ToUpper() == categoryName.ToUpper());
-            var brand = await _db.Brands.FirstOrDefaultAsync(c => c.Name.ToUpper() == bradnName.ToUpper());
+            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Name!.ToUpper() == categoryName.ToUpper());
+            var brand = await _db.Brands.FirstOrDefaultAsync(c => c.Name!.ToUpper() == bradnName.ToUpper());
 
             if (brand is null || category is null)
             {
@@ -177,8 +177,8 @@ namespace CarDealership.Controllers
             }
 
             var models = await _db.Models
-                                  .Where(model => model.Brand.Name.ToUpper() == brand.Name.ToUpper() 
-                                                  && model.Category.Name.ToUpper() == categoryName.ToUpper())
+                                  .Where(model => model.Brand!.Name!.ToUpper() == brand.Name!.ToUpper() 
+                                                  && model.Category!.Name!.ToUpper() == categoryName.ToUpper())
                                   .Select(model => new
                                   {
                                       model.Id,
@@ -207,7 +207,7 @@ namespace CarDealership.Controllers
                 return BadRequest(ModelState);
             }
 
-            var categoryExists = await _db.Categories.FirstOrDefaultAsync(category => category.Name.ToUpper() == name.ToUpper());
+            var categoryExists = await _db.Categories.FirstOrDefaultAsync(category => category.Name!.ToUpper() == name.ToUpper());
 
             if (categoryExists is not null)
             {
@@ -242,7 +242,7 @@ namespace CarDealership.Controllers
                 return BadRequest(ModelState);
             }
 
-            var brandExists = await _db.Brands.FirstOrDefaultAsync(brand => brand.Name.ToUpper() == name.ToUpper());
+            var brandExists = await _db.Brands.FirstOrDefaultAsync(brand => brand.Name!.ToUpper() == name.ToUpper());
 
             if (brandExists is not null)
             {
@@ -279,11 +279,11 @@ namespace CarDealership.Controllers
             }
 
             var modelExists = await _db.Models
-                                            .FirstOrDefaultAsync(model => model.Name.ToUpper() == name.ToUpper());
+                                            .FirstOrDefaultAsync(model => model.Name!.ToUpper() == name.ToUpper());
             var brand = await _db.Brands
-                                        .FirstOrDefaultAsync(brand => brand.Name.ToUpper() == brandName.ToUpper());
+                                        .FirstOrDefaultAsync(brand => brand.Name!.ToUpper() == brandName.ToUpper());
             var category = await _db.Categories
-                                    .FirstOrDefaultAsync(category => category.Name.ToUpper() == categoryName.ToUpper());
+                                    .FirstOrDefaultAsync(category => category.Name!.ToUpper() == categoryName.ToUpper());
 
             if (brand is null || category is null)
             {
